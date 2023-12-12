@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 const CheckDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,6 +25,12 @@ const CheckDiv = styled.div`
 
  
   }
+  &:hover {
+ 
+    transform:scale(1.2);
+    animation: 0.6s ease infinite;
+
+  }
 `;
 
 const CheckButton = styled.div`
@@ -48,31 +53,31 @@ const CheckButton = styled.div`
   button:hover {
     background-color: #26547c;
     color: white;
-    transform:translateY(-3px);
+    transform:translateY(-5px);
     animation: 0.6s ease infinite;
 
   }
 `;
 
-const Checklist = () => {
+const Checklist = ({dataForChecklist}) => {
+  const { title, description, todos } = dataForChecklist;
+  //updateChecklistItem 
+  //const handleTodoChange = (index, event) => {
+   // const updatedTodo = event.target.value;
+  //  updateChecklistItem(index, updatedTodo);
+ // };
   return (
     <>
       <CheckDiv>
-        <h1>Checklist</h1>
-        <p>Checklist description</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
         <ul>
-          <li>
-            <input type="checkbox" id="item_one" />
-            <label htmlFor="item_one">Item 1</label>
-          </li>
-          <li>
-            <input type="checkbox" id="item_two" />
-            <label htmlFor="item_two">Item 2</label>
-          </li>
-          <li>
-            <input type="checkbox" id="item_three" />
-            <label htmlFor="item_three">Item 3</label>
-          </li>
+          {todos.map((todo, index) => (
+            <li key={index}>
+              <input type="checkbox" id={`item_${index}`} />
+              <label htmlFor={`item_${index}`}>{todo.title}</label>
+            </li>
+          ))}
         </ul>
         <CheckButton>
           <button>Edit</button>

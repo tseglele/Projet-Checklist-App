@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 const AsideDiv = styled.div`
 position: fixed;
 top: 0;
