@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Aside from "../components/Aside";
+import {postDataToApi} from "./Api";
+import { useState} from 'react';
 
 const FormDiv = styled.form`
 width:500px;
@@ -65,26 +67,88 @@ color:#EF476F;
 }
 `
 
-export default function ModifyCheck ()  {
-    return ( 
-    <TotalDiv>
-        
-    <Aside></Aside>
-    <FormContainerDiv>
-    <h1> Modify list</h1>
-    <FormDiv>
-        <input  type="text"></input>
-        <button>Add Title</button>
+export default function  ModifyCheck() {
+    
+    const [title, setTitle] = useState(''); // État pour stocker le titre du formulaire
+    const [description, setDescription] = useState(''); // État pour stocker la description du formulaire
+    const [todos, setTodos] = useState([]);// État pour stocker les todo du formulaire
+   
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    };
 
-        <input  type="text"></input>
-        <button>Add Description</button>
+    
+    const handleDescriptionChange = (event) => {
+        setDescription(event.target.value);
+    };
 
-        <input  type="text"></input>
-        <button>Add Task</button>
+    const handleTodoChange = (index, event) => {
+        const newTodos = [...todos];
+        newTodos[index] = { ...newTodos[index], [event.target.name]: event.target.value };
+        setTodos(newTodos);
+    };
 
-    <button className="saveButton">Save</button>
-    </FormDiv>
-    </FormContainerDiv>
-    </TotalDiv> );
-}
+    const handleAddTodo = () => {
+        setTodos([...todos, { title: '', description: '' }]);
+    };
  
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+
+        
+        const formData = {
+            title: title,
+            description: description,
+            todo: todos,
+        };
+
+   
+    try {
+        const response = await postDataToApi(formData);
+        console.log('Response from API:', response);
+        
+        
+    } catch (error) {
+        console.error('Error sending data to API:', error);
+    }
+};
+
+    return (
+        <TotalDiv>
+            <Aside></Aside>
+
+            <FormContainerDiv>
+                <h1> Create a new list</h1>
+                <FormDiv onSubmit={handleFormSubmit}>
+                    <input type="text" placeholder="Add a Title"  value={title}
+                        onChange={handleTitleChange} ></input>
+
+
+                    <input type="text" placeholder="Add a Description"  value={description}
+                        onChange={handleDescriptionChange} ></input>
+            {todos.map((todo, index) => (
+                <div key={index}>
+                    <input
+                        type="text"
+                        placeholder="Add a Todo Title"
+                        value={todo.title}
+                        name="title"
+                        onChange={(event) => handleTodoChange(index, event)}
+                    />
+
+                </div>
+            ))}
+
+            <button type="button" onClick={handleAddTodo}>
+                Add Todo
+            </button>
+        
+                    
+
+                    <button type="submit" className="saveButton">Save</button>
+            
+                </FormDiv>
+            </FormContainerDiv>
+        </TotalDiv>
+    );
+}

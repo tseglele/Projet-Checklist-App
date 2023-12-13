@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Aside from "../components/Aside";
 import {postDataToApi} from "./Api";
 import { useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const TotalDiv = styled.div`
 box-sizing:border-box;
@@ -28,7 +29,7 @@ const FormDiv = styled.form`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #FFD166;
+    background-color:  #EF476F;
     border: none;
     border-radius: 35px;
     padding: 50px;
@@ -50,7 +51,7 @@ const FormDiv = styled.form`
 
         display: block;
 
-        border: none;
+        border: 2px solid;
 
         padding: 8px;
 
@@ -70,7 +71,7 @@ const FormDiv = styled.form`
 
         width: 100px;
 
-        background-color: #EF476F;
+        background-color: #FFD166;
     }
 `;
 
@@ -91,7 +92,15 @@ const FormContainerDiv = styled.div`
         color: #EF476F;
     }
 `;
+const ButtonsDiv  = styled.div`
+width:200px;
 
+ display: flex;
+
+flex-direction: row;
+
+        background-color: #EF476F;
+`;
 export default function  Form() {
     const [title, setTitle] = useState(''); // État pour stocker le titre du formulaire
     const [description, setDescription] = useState(''); // État pour stocker la description du formulaire
@@ -111,6 +120,10 @@ export default function  Form() {
         newTodos[index] = { ...newTodos[index], [event.target.name]: event.target.value };
         setTodos(newTodos);
     };
+    const handleDeleteTodo = (index) => {
+        const updatedTodos = todos.filter((_, i) => i !== index);
+        setTodos(updatedTodos);
+      };
 
     const handleAddTodo = () => {
         setTodos([...todos, { title: '', description: '' }]);
@@ -130,16 +143,17 @@ export default function  Form() {
     try {
         const response = await postDataToApi(formData);
         console.log('Response from API:', response);
-        const dataForChecklist = { title: title, description: description, todos: todos };
-        setTitle('');
-        setDescription('');
-        setTodos([]);
-        
+      
     } catch (error) {
         console.error('Error sending data to API:', error);
     }
 };
+const navigate = useNavigate();
 
+const handleNavigation = (path) => {
+ 
+  navigate(path);
+};
     return (
         <TotalDiv>
             <Aside></Aside>
@@ -162,7 +176,7 @@ export default function  Form() {
                         name="title"
                         onChange={(event) => handleTodoChange(index, event)}
                     />
-
+                <button onClick={() => handleDeleteTodo(index)}>Delete</button>
                 </div>
             ))}
 
@@ -171,9 +185,9 @@ export default function  Form() {
             </button>
         
                     
-
+                <ButtonsDiv>
                     <button type="submit" className="saveButton">Save</button>
-            
+                    <button  onClick={() => handleNavigation('/')} className="saveButton">Back to Dashboard</button></ButtonsDiv>
                 </FormDiv>
             </FormContainerDiv>
         </TotalDiv>

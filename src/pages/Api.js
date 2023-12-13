@@ -9,24 +9,18 @@ const deleteUrl = 'https://greenvelvet.alwaysdata.net/pfc/checklist/delete'
 const statutUrl = 'https://greenvelvet.alwaysdata.net/pfc/checklist/statut'
 const token = '8dc0c6d510d19c667bb7993c474d6ac96c73437c'
 
-export const fetchDataFromApi = async () => {
+export async function fetchDataFromApi() {
   try {
-    const responseGet = await axios.get(apiUrl, {
-      headers: {
-        'Content-Type': 'application/json',
-        'token' : 'tonToken',  
-      },
-    });
-    
-  return responseGet.data;
-
-    
+    const response = await fetch(apiUrl); // Remplacez cette URL par votre URL d'API
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error(error);
+    throw new Error('Error fetching data from API:', error.message);
   }
-};
-
-  
+}
   export const postDataToApi = async (data) => {
      try {
 

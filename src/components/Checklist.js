@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
 const CheckDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -57,6 +58,12 @@ const CheckButton = styled.div`
     animation: 0.6s ease infinite;
 
   }
+  @media screen and (max-width: 400px) {
+    width: 200px;
+    height: 100px;
+    margin: 15px; /* Ajustement de la marge pour la taille réduite */
+  }
+
 `;
 
 const Checklist = ({dataForChecklist}) => {
@@ -66,7 +73,14 @@ const Checklist = ({dataForChecklist}) => {
    // const updatedTodo = event.target.value;
   //  updateChecklistItem(index, updatedTodo);
  // };
+ const navigate = useNavigate();
+
+ const handleNavigation = (path) => {
+  
+   navigate(path);
+ };
   return (
+    
     <>
       <CheckDiv>
         <h1>{title}</h1>
@@ -80,7 +94,7 @@ const Checklist = ({dataForChecklist}) => {
           ))}
         </ul>
         <CheckButton>
-          <button>Edit</button>
+          <button onClick={() => handleNavigation('/modify')}>Edit</button>
           <button>Delete</button>
         </CheckButton>
       </CheckDiv>

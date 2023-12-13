@@ -10,9 +10,7 @@ function App() {
 
   return (
     <>
-<Dashboard></Dashboard>
-
-      
+    <Dashboard/>
         <Routes>
           <Route exact path="/dashboard" element={<Dashboard/>} />
           <Route path="/form" element={<Form />} />

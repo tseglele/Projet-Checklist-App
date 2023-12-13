@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
 const AsideDiv = styled.div`
 position: fixed;
-top: 0;
 left: 0;
 display:flex;
 flex-direction:column;
@@ -21,11 +21,27 @@ input{
   width:60%;
   margin:10%;
 }
+
+@media screen and (max-width: 1030px) {
+    width: 100%; /* Prend toute la largeur */
+    height:100px;
+    position:fixed;
+    bottom:0;
+    border-radius: 0;
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+
+}
 `
-const LogoDiv = styled.img`
- margin-left:58px;
-width:50px;
+const LogoDiv = styled.h1`
+margin-left:15px;
+width:150px;
 height:50px;
+background-color:rgba(38, 84, 124, 1);
+color:white;
 `
 
 const CreateButton =styled.button`
@@ -38,11 +54,16 @@ const CreateButton =styled.button`
  background-color:#FFD166;
 `
 const Aside = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+   
+    navigate(path);
+  };
     return (<>
     <AsideDiv>
-        <LogoDiv src="/logo192.png"></LogoDiv>
-        <input type="text" placeholder="Search"/>
-        <CreateButton>Create Checklist</CreateButton>
+        <LogoDiv onClick={() => handleNavigation('/')}>Pre-flight Checklist</LogoDiv>
+        <CreateButton onClick={() => handleNavigation('/form')}>Create Checklist</CreateButton>
     </AsideDiv>
          </> );
 }
